@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   title: "Minecraft 萤石社 | 西南石油大学南充校区",
   description: "西南石油大学南充校区 Minecraft 萤石社官网——一起挖掘创意、点亮校园！",
   icons: {
-    icon: "/assets/svg/favicon.svg",
+    icon: "/ico/icon.svg",
   },
   // metadataBase should reflect the deployed hostname; we prefer an explicit env var,
   // then Vercel-provided URL, then a custom SWPUMC env, finally localhost fallback.
@@ -39,10 +39,10 @@ export const metadata: Metadata = {
     siteName: '萤石社',
     images: [
       {
-        url: '/assets/svg/favicon.svg',
-        width: 512,
-        height: 512,
-        alt: '萤石社 favicon'
+        url: '/ico/icon.svg',
+        width: 500,
+        height: 500,
+        alt: '萤石社 icon'
       }
     ],
     locale: 'zh-CN',

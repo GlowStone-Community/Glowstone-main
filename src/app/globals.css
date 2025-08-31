@@ -41,6 +41,8 @@ body {
   /* 首选：Fusion Pixel 12px（通过 FontLoader 注入），其次 Noto Sans SC 回退 */
   font-family: "Fusion Pixel 12px P zh_hans", "Noto Sans SC", system-ui,
     -apple-system, Segoe UI, Roboto, Arial, "Microsoft Yahei", sans-serif;
+  /* 自定义鼠标指针 */
+  cursor: url('/cursor/SWORD.png'), auto;
 }
 /* Apply pixel font everywhere as primary, with sensible fallbacks */
 html,
@@ -215,11 +217,39 @@ body,
 
 /* Hero 背景 */
 .hero-bg {
-  background: 
-    linear-gradient(#66bb6a 0 80px, transparent 80px),
-    repeating-linear-gradient(45deg, #6d4c41 0 14px, #5d4037 14px 28px);
-  background-size: 28px 28px;
-  background-position: 0 0;
+  background-image: url('/wallpaper_minecraft_bedrock_edition_1920x1080.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  transition: background-image 0.3s ease;
+}
+
+/* 下界主题的Hero背景 */
+.theme-nether .hero-bg {
+  background-image: url('/wallpaper_minecraft_burberry_1920x1080.png');
+}
+
+.hero-bg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.3) 0%,
+    rgba(0, 0, 0, 0.1) 50%,
+    rgba(0, 0, 0, 0.4) 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.hero-bg > * {
+  position: relative;
+  z-index: 2;
 }
 
 /* Section 背景 */
@@ -409,6 +439,16 @@ body,
   padding: 10px 14px;
   cursor: pointer;
   transition: transform 0.1s ease-in-out;
+}
+
+/* 可点击元素的指针样式 */
+a, button, .mc-btn, .mc-btn-nav, [role="button"], [tabindex] {
+  cursor: url('/cursor/axe.png'), pointer;
+}
+
+/* 文本选择指针 */
+p, h1, h2, h3, h4, h5, h6, span, div, li, td, th, input, textarea, select {
+  cursor: url('/cursor/feather.png'), text;
 }
 .mc-btn:hover {
   transform: translateY(-2px);

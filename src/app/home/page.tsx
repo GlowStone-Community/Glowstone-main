@@ -95,9 +95,11 @@ export default function Home() {
     <>
       <Header />
       <main id="home">
+
         <section className="hero-bg relative border-black py-[70px] pb-[90px]">
           <div className="container mx-auto w-[min(1100px,92%)]">
-            <h1 className="font-press-start mc-hero-title text-2xl lg:text-3xl text-shadow-lg">Minecraft 萤石社</h1>
+            <h1 className="font-press-start mc-hero-title text-2xl lg:text-3xl 
+            text-shadow-lg">Minecraft 萤石社</h1>
             <p className="text-lg text-[#e6ffe6]">西南石油大学南充校区 · 今天也要发光！</p>
             <div className="flex items-center gap-3 mt-4">
               <button onClick={() => showToast('进度达成：测试消息1')} className="mc-btn primary">测试进度1</button>

@@ -72,6 +72,7 @@
 .villager {
   position: absolute;
   bottom: -50px;
+  cursor: url('/cursor/axe.png'), pointer;
   left: -13px;
   z-index: 10000;
 }
