@@ -1,26 +1,132 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --mc-green: #3c8527;
+  --mc-darker-green: #2d641e;
+  --mc-brown: #6b3e1e;
+  --mc-dirt: #8b5a2b;
+  --mc-stone: #707a7c;
+  --mc-ui: #c6c6c6;
+  --mc-ui-dark: #4c4c4c;
+  --mc-black: #111;
+  --mc-white: #fafafa;
+  --accent: #10c25b;
+  --nether: #7a1b1b;
+  --end: #3b2b5a;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: var(--mc-white);
+  background: #2b2b2b;
+  line-height: 1.6;
+  font-family: "Noto Sans SC", system-ui, -apple-system, Segoe UI, Roboto, Arial, "Microsoft Yahei", sans-serif;
+}
+
+.pixelated {
+  image-rendering: pixelated;
+}
+
+/* 主题切换 */
+.theme-nether {
+  background: #1d0b0b;
+}
+.theme-nether .site-header {
+  background: linear-gradient(#b71c1c 0 16px,transparent 16px),repeating-linear-gradient(90deg,#5d0d0d 0 16px,#7a1b1b 16px 32px),linear-gradient(#4e0f0f 0 52%,#3a0b0b 0 100%);
+}
+.theme-nether .mc-btn.primary {
+  background: #ff6f61;
+}
+.theme-nether .section-bg-stone {
+  background: repeating-linear-gradient(45deg,#4e342e 0 14px,#3e2723 14px 28px);
+}
+
+/* 顶部草方块风格 */
+.site-header {
+  background:
+    linear-gradient(#4caf50 0 16px, transparent 16px),
+    repeating-linear-gradient(90deg,#2e7d32 0 16px,#388e3c 16px 32px),
+    linear-gradient(#5d4037 0 52%,#6d4c41 0 100%);
+}
+
+/* Hero 背景 */
+.hero-bg {
+  background:
+    linear-gradient(#66bb6a 0 80px,transparent 80px),
+    linear-gradient(#2e7d32 0 82px,transparent 82px),
+    radial-gradient(circle at 20% 20%,#a5d6a7 0 3px,transparent 3px),
+    repeating-linear-gradient(45deg,#6d4c41 0 10px,#5d4037 10px 20px);
+}
+
+/* Section 背景 */
+.section-bg-stone {
+  background: repeating-linear-gradient(45deg,#9e9e9e 0 14px,#bdbdbd 14px 28px);
+}
+.section-bg-dirt {
+  background: repeating-linear-gradient(45deg,#6d4c41 0 14px,#5d4037 14px 28px);
+}
+
+/* 木牌告示 */
+.sign-board-bg {
+  background: repeating-linear-gradient(#a98274 0 8px,#8d6e63 8px 16px);
+}
+
+/* 图库占位的物品展示框 */
+.frame-bg {
+  background:
+    linear-gradient(#caa 0 12px,transparent 12px),
+    repeating-linear-gradient(45deg,#999 0 6px,#bbb 6px 12px);
+}
+
+/* 状态图标 */
+.hearts-icon {
+  background: conic-gradient(#000 0 25%,transparent 0) 0 0/100% 100%,radial-gradient(circle,#e53935 60%,#b71c1c 61%) center/80% 80% no-repeat;
+}
+.hunger-icon {
+  background: conic-gradient(#000 0 25%,transparent 0) 0 0/100% 100%,radial-gradient(circle,#ffb74d 60%,#ef6c00 61%) center/80% 80% no-repeat;
+}
+
+/* MC 风格按钮 */
+.mc-btn {
+  font-family: "Press Start 2P", monospace;
+  border: 3px solid #000;
+  box-shadow: 0 4px 0 #000;
+  background: #c6c6c6;
+  color: #222;
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: transform 0.1s ease-in-out;
+}
+.mc-btn:hover {
+  transform: translateY(-2px);
+}
+.mc-btn.primary {
+  background: #55dd55;
+}
+
+.mc-btn-nav {
+  padding: 8px 10px;
+  border: 2px solid #000;
+  box-shadow: 0 3px 0 #000;
+  background: var(--mc-ui);
+  color: #222;
+  font-weight: 700;
+  transition: transform 0.1s ease-in-out;
+}
+.mc-btn-nav:hover {
+  transform: translateY(-2px);
+  background: #e0e0e0;
+}
+
+/* 进度达成 */
+.achievement.show {
+  display: block;
+  animation: ach 2.8s ease forwards;
+}
+@keyframes ach {
+  0% { transform: translateX(-10px); opacity: 0; }
+  10% { transform: translateX(0); opacity: 1; }
+  80% { opacity: 1; }
+  100% { transform: translateX(-10px); opacity: 0; }
 }
