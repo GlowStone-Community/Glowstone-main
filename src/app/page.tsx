@@ -32,9 +32,12 @@ export default function Home() {
   }, [isNetherTheme]);
 
   const handleThemeToggle = useCallback(() => {
-    setIsNetherTheme(prev => !prev);
-    showToast(isNetherTheme ? '进度达成：回到主世界。' : '进度达成：传送至下界！');
-  }, [isNetherTheme, showToast]);
+    setIsNetherTheme(prev => {
+      const next = !prev;
+      showToast(next ? '进度达成：传送至下界！' : '进度达成：回到主世界。');
+      return next;
+    });
+  }, [showToast]);
 
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
     const key = e.key.toLowerCase();

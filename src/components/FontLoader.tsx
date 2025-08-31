@@ -6,7 +6,6 @@ export default function FontLoader() {
   useEffect(() => {
     async function rewriteCSS(main: string | undefined, callback?: string) {
       if (!main) return;
-      const target = 'main';
       try {
         const res = await fetch(main, { method: 'GET', mode: 'cors' });
         const CSS_TEXT = await res.text();
