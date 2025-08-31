@@ -10,7 +10,7 @@ export default function Achievement({ message, show }: AchievementProps) {
 
   return (
     <div 
-      className="achievement show fixed left-5 bottom-5 z-50 border-4 border-black bg-[#3a3] shadow-[0_6px_0_#000] text-[#021] px-3.5 py-2.5 font-bold"
+      className="achievement show"
       aria-live="polite" 
       aria-atomic="true"
     >

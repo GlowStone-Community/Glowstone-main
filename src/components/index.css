@@ -1,0 +1,181 @@
+/* MinecraftHUD 组件样式 */
+.minecraft-hud {
+  position: fixed;
+  bottom: min(20px, 3vw);
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  z-index: 999999;
+  display: flex;
+  flex-direction: column;
+  gap: min(8px, 1.5vw);
+  align-items: center;
+  width: fit-content;
+  filter: drop-shadow(0 12px 15px rgba(0, 0, 0, 0.3));
+}
+
+.minecraft-hud-row {
+  display: flex;
+  gap: min(20px, 4vw);
+}
+
+.minecraft-hud-hearts,
+.minecraft-hud-hunger {
+  display: flex;
+  gap: min(2px, 0.5vw);
+}
+
+
+
+.minecraft-hud-xp {
+  display: flex;
+  align-items: center;
+  gap: min(10px, 2vw);
+  font-family: "Press Start 2P", monospace;
+  font-size: clamp(8px, 1.5vw, 12px);
+}
+
+.minecraft-hud-xp-label {
+  font-weight: 100;
+  color: #bfffbf;
+  text-shadow: 1px 1px 0 #000;
+  font-size: clamp(8px, 1.5vw, 12px);
+}
+
+.minecraft-hud-xp-container {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+/* 绳子菜单样式 */
+.rope-toggle {
+  position: fixed;
+  top: 0;
+  right: 100px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  width: 4px;
+  height: 100px;
+  z-index: 9999;
+}
+
+.rope {
+  width: 100%;
+  background-color: #8B4513;
+  border: 2px solid #000;
+  height: 100%;
+}
+
+.villager {
+  position: absolute;
+  bottom: -50px;
+  left: -13px;
+  z-index: 10000;
+}
+
+/* 告示牌组件样式 - 使用正确的纹理平铺 */
+.sign-board-container {
+  position: relative;
+  display: inline-block;
+  margin: 20px 0;
+}
+
+.sign-board-main {
+  width: min(600px, 90vw);
+  height: min(288px, 43.2vw);
+  min-width: 300px;
+  min-height: 144px;
+  background-image: url('/oak_planks.png');
+  background-size: 16px 16px;
+  background-repeat: repeat;
+  border: 3px solid #000;
+  box-shadow: 0 3px 0 #000;
+  position: relative;
+  z-index: 2;
+}
+
+.sign-board-content {
+  position: absolute;
+  top: 2%;
+  left: 2%;
+  right: 2%;
+  bottom: 2%;
+  padding: 3%;
+  z-index: 3;
+  overflow: hidden;
+}
+
+/* Minecraft风格字体样式 */
+.sign-board-container .sign-board-content h3 {
+  font-family: "Press Start 2P", "Minecraft", monospace !important;
+  font-weight: bold !important;
+  letter-spacing: 0.01em !important;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.3) !important;
+  line-height: 1 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.sign-board-content div {
+  font-family: "Press Start 2P", "Minecraft", monospace;
+  font-weight: normal;
+  letter-spacing: 0.02em;
+  line-height: 1.6;
+  font-size: clamp(0.7rem, 1.8vw, 0.875rem);
+}
+
+.sign-board-content ul {
+  margin-top: 8px;
+}
+
+.sign-board-content li {
+  margin-bottom: 4px;
+  padding-left: 8px;
+}
+
+.sign-board-post {
+  position: absolute;
+  bottom: -10%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sign-board-post-top {
+  width: min(48px, 8vw);
+  height: min(48px, 8vw);
+  min-width: 24px;
+  min-height: 24px;
+  background-image: url('/oak_log.png');
+  background-size: 32px 32px;
+  background-repeat: repeat;
+  border: 3px solid #000;
+  box-shadow: 0 3px 0 #000;
+}
+
+.sign-board-post-middle {
+  width: min(48px, 8vw);
+  height: min(48px, 8vw);
+  min-width: 24px;
+  min-height: 24px;
+  background-image: url('/oak_log.png');
+  background-size: 16px 16px;
+  background-repeat: repeat;
+}
+
+.sign-board-post-bottom {
+  width: min(48px, 8vw);
+  height: min(48px, 8vw);
+  min-width: 24px;
+  min-height: 24px;
+  background-image: url('/oak_log.png');
+  background-size: 16px 16px;
+  background-repeat: repeat;
+  box-shadow: 0 3px 0 #000;
+}

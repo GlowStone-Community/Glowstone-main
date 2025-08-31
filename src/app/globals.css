@@ -24,6 +24,16 @@
   --ui-shadow: #000;
 }
 
+/* Webkit滚动条不可见 */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Firefox滚动条不可见 */
+* {
+  scrollbar-width: none;
+}
+
 body {
   color: var(--mc-white);
   background: #2b2b2b;
@@ -160,10 +170,12 @@ body,
 
 /* Mobile nav specific fixes: center menu and make it comfortable */
 .main-nav.absolute {
-  top: 56px; /* below header */
+  position: fixed;
+  top: 0; /* 从屏幕顶部开始 */
   left: 12px;
   right: 12px;
   border-radius: 6px;
+  z-index: 9998;
 }
 
 /* make image borders look like item frames */
@@ -203,26 +215,113 @@ body,
 
 /* Hero 背景 */
 .hero-bg {
-  background: linear-gradient(#66bb6a 0 80px, transparent 80px),
-    linear-gradient(#2e7d32 0 82px, transparent 82px),
-    radial-gradient(circle at 20% 20%, #a5d6a7 0 3px, transparent 3px),
-    repeating-linear-gradient(45deg, #6d4c41 0 10px, #5d4037 10px 20px);
+  background: 
+    linear-gradient(#66bb6a 0 80px, transparent 80px),
+    repeating-linear-gradient(45deg, #6d4c41 0 14px, #5d4037 14px 28px);
+  background-size: 28px 28px;
+  background-position: 0 0;
 }
 
 /* Section 背景 */
 .section-bg-stone {
-  background: repeating-linear-gradient(
-    45deg,
-    #9e9e9e 0 14px,
-    #bdbdbd 14px 28px
-  );
+  background-image: url('/stone.png');
+  background-size: 64px 64px;
+  background-repeat: repeat;
+  background-position: 0 0;
+  animation: moveStripes 3s linear infinite;
+  position: relative;
+}
+
+.section-bg-stone::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(ellipse, 
+   transparent 0%, 
+   rgba(0,0,0,0.3) 75%,
+   rgba(0,0,0,0.6) 85%, 
+   rgba(0,0,0,0.8) 90%,
+   rgba(0,0,0,0.95) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes moveStripes {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 64px 64px;
+  }
 }
 .section-bg-dirt {
-  background: repeating-linear-gradient(
-    45deg,
-    #6d4c41 0 14px,
-    #5d4037 14px 28px
-  );
+  background-image: url('/dirt.png');
+  background-size: 64px 64px;
+  background-repeat: repeat;
+  background-position: 0 0;
+  animation: moveStripes 1.5s linear infinite;
+  position: relative;
+}
+
+.section-bg-netherrack {
+  background-image: url('/netherrack.png');
+  background-size: 64px 64px;
+  background-repeat: repeat;
+  background-position: 0 0;
+  animation: moveStripes 1.5s linear infinite;
+  position: relative;
+}
+
+.section-bg-dirt::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 0;
+  right: 0;
+  height: 20px;
+  background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.3));
+  pointer-events: none;
+  z-index: 1;
+}
+
+.section-bg-dirt::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  right: 0;
+  height: 20px;
+  background: linear-gradient(to top, transparent, rgba(0,0,0,0.3));
+  pointer-events: none;
+  z-index: 1;
+}
+
+.section-bg-netherrack::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 0;
+  right: 0;
+  height: 20px;
+  background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.3));
+  pointer-events: none;
+  z-index: 1;
+}
+
+.section-bg-netherrack::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  right: 0;
+  height: 20px;
+  background: linear-gradient(to top, transparent, rgba(0,0,0,0.3));
+  pointer-events: none;
+  z-index: 1;
 }
 
 /* 木牌告示 */
@@ -254,10 +353,18 @@ body,
   background-image: linear-gradient(180deg, #ff6b6b 0 40%, #c62828 60% 100%);
   box-shadow: 0 4px 0 #000, inset 0 2px rgba(255, 255, 255, 0.12);
 }
+.hearts-icon.empty {
+  background-color: #8b8b8b;
+  background-image: linear-gradient(180deg, #a0a0a0 0 40%, #6b6b6b 60% 100%);
+}
 .hunger-icon {
   background-color: #ffb14d;
   background-image: linear-gradient(180deg, #ffd07a 0 40%, #e66f1a 60% 100%);
   box-shadow: 0 4px 0 #000, inset 0 2px rgba(255, 255, 255, 0.12);
+}
+.hunger-icon.empty {
+  background-color: #8b8b8b;
+  background-image: linear-gradient(180deg, #a0a0a0 0 40%, #6b6b6b 60% 100%);
 }
 
 /* HUD experience bar */
@@ -314,8 +421,6 @@ body,
 .mc-btn:focus,
 .mc-btn-nav:focus,
 a:focus {
-  outline: 3px solid #fff3bf;
-  outline-offset: 3px;
   box-shadow: 0 6px 0 rgba(0, 0, 0, 0.6);
 }
 
@@ -334,24 +439,48 @@ a:focus {
 }
 
 /* 进度达成 */
+.achievement {
+  display: none;
+  position: fixed;
+  left: 20px;
+  bottom: 20px;
+  z-index: 999999;
+  border: 4px solid #000;
+  background: #3a3;
+  box-shadow: 0 6px 0 #000;
+  color: #021;
+  padding: 14px 10px;
+  font-weight: bold;
+  font-family: "Press Start 2P", monospace;
+  font-size: 12px;
+  max-width: 300px;
+  word-wrap: break-word;
+}
+
 .achievement.show {
   display: block;
-  animation: ach 2.8s ease forwards;
+  animation: achievement-show 3.4s ease forwards;
 }
-@keyframes ach {
+
+@keyframes achievement-show {
   0% {
-    transform: translateX(-10px);
+    transform: translateX(-100%);
     opacity: 0;
   }
-  10% {
+  5.88% {
     transform: translateX(0);
     opacity: 1;
   }
-  80% {
+  5.88% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  94.12% {
+    transform: translateX(0);
     opacity: 1;
   }
   100% {
-    transform: translateX(-10px);
+    transform: translateX(-100%);
     opacity: 0;
   }
 }

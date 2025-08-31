@@ -25,6 +25,7 @@ const config: Config = {
       fontFamily: {
         'press-start': ['"Press Start 2P"', 'monospace'],
         'noto-sans': ['"Noto Sans SC"', 'sans-serif'],
+        'minecraft': ['"Minecraft", "Press Start 2P"', 'monospace'],
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",

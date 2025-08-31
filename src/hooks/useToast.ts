@@ -8,14 +8,19 @@ export function useToast() {
   useEffect(() => {
     if (toast.show) {
       const timer = setTimeout(() => {
-        setToast(prev => ({ ...prev, show: false }));
-      }, 2800);
+        setToast({ message: '', show: false });
+      }, 3400); // 调整为3.4秒，与CSS动画时间一致
       return () => clearTimeout(timer);
     }
   }, [toast.show]);
 
   const showToast = useCallback((message: string) => {
-    setToast({ message, show: true });
+    // 先重置状态，确保动画能重新触发
+    setToast({ message: '', show: false });
+    // 使用setTimeout确保状态重置后再显示新的toast
+    setTimeout(() => {
+      setToast({ message, show: true });
+    }, 50);
   }, []);
 
   return { toast, showToast };
