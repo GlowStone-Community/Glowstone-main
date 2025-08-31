@@ -77,22 +77,22 @@ export default function Home() {
       <main id="home">
         <section className="hero-bg relative border-b-4 border-black py-[70px] pb-[90px]">
           <div className="container mx-auto w-[min(1100px,92%)]">
-            <h1 className="font-press-start text-2xl lg:text-3xl mb-2.5 text-shadow-lg">Minecraft 萤石社</h1>
+            <h1 className="font-press-start mc-hero-title text-2xl lg:text-3xl mb-2.5 text-shadow-lg">Minecraft 萤石社</h1>
             <p className="text-lg mb-4 text-[#e6ffe6]">西南石油大学南充校区 · 今天也要发光！</p>
             <div className="flex items-center gap-3">
               <a href="#about" className="mc-btn primary">了解我们</a>
               <a href="#join" className="mc-btn">加入社团</a>
               <button onClick={handleThemeToggle} className="mc-btn" aria-pressed={isNetherTheme}>拉杆</button>
             </div>
-            <div className="mt-4 flex gap-4">
-              <div aria-label="生命值">{Array.from({ length: 5 }).map((_, i) => <span key={i} className="hearts-icon inline-block w-[22px] h-[22px] border-2 border-black mr-1"></span>)}</div>
-              <div aria-label="饥饿值">{Array.from({ length: 5 }).map((_, i) => <span key={i} className="hunger-icon inline-block w-[22px] h-[22px] border-2 border-black mr-1"></span>)}</div>
+            <div className="mt-4 hud-row">
+              <div aria-label="生命值" className="hud-row">{Array.from({ length: 10 }).map((_, i) => <span key={i} className="hearts-icon" aria-hidden></span>)}</div>
+              <div aria-label="饥饿值" className="hud-row">{Array.from({ length: 10 }).map((_, i) => <span key={i} className="hunger-icon" aria-hidden></span>)}</div>
             </div>
           </div>
-          <div className="absolute left-1/2 -translate-x-1/2 -bottom-[22px] bg-[#0c3] border-2 border-black shadow-[0_4px_0_#000] text-[#021] px-2.5 py-1.5 flex items-center gap-2.5">
-            <span>Lv. <b>{xp.level}</b></span>
-            <div className="w-[220px] h-2.5 border-2 border-black bg-[#0a0] relative">
-              <i className="block h-full bg-[#5f5] shadow-[inset_0_0_6px_#2f2]" style={{ width: `${xp.progress}%` }}></i>
+          <div className="mc-xp-display absolute left-1/2 -translate-x-1/2 -bottom-[22px] bg-[#0c3] border-2 border-black shadow-[0_4px_0_#000] text-[#021] px-2.5 py-1.5 flex items-center gap-2.5">
+            <span className="mc-xp-label">Lv. <b>{xp.level}</b></span>
+            <div className="mc-xp-track w-[220px] h-3 border-2 border-black bg-[#0a0] relative">
+              <i className="mc-xp-fill block h-full" style={{ width: `${xp.progress}%` }}></i>
             </div>
           </div>
         </section>
@@ -117,12 +117,78 @@ export default function Home() {
             <h2 className="font-press-start text-2xl mb-5 text-shadow">活动一览</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {activities.map(act => (
-                <article key={act.title} className="border-4 border-black bg-mc-ui text-black p-3 shadow-[0_6px_0_#000]">
-                  <Image src={`/assets/svg/${act.icon}.svg`} alt={act.title} width={42} height={42} className="pixelated" />
-                  <h3 className="font-press-start text-sm my-2">{act.title}</h3>
-                  <p>{act.desc}</p>
+                <article key={act.title} className="mc-card text-black p-3">
+                  <div className="flex items-center gap-3">
+                    <div className="item-frame w-12 h-12 flex items-center justify-center">
+                      <Image src={`/assets/svg/${act.icon}.svg`} alt={act.title} width={42} height={42} className="pixelated" />
+                    </div>
+                    <div>
+                      <h3 className="font-press-start text-sm my-0">{act.title}</h3>
+                      <p className="text-sm mt-1">{act.desc}</p>
+                    </div>
+                  </div>
                 </article>
               ))}
+            </div>
+          </div>
+        </section>
+        
+        <section id="server" className="section-bg-dirt py-[70px]">
+          <div className="container mx-auto w-[min(1100px,92%)]">
+            <h2 className="font-press-start text-2xl mb-5 text-shadow">社团服务器</h2>
+            <div className="sign-board-bg border-4 border-black shadow-[0_6px_0_#000] text-[#210] p-4">
+              <p>我们的联机服务器提供生存、创意与迷你游戏区。想加入请看下方入口或扫码联系管理员。</p>
+              <ul className="mt-2.5">
+                <li>版本：Java & Bedrock（跨平台信息见社团公告）</li>
+                <li>常驻插件：区域保护、家园、经济与小游戏</li>
+                <li>如何获取：填写加入申请或现场扫码加入我们</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section id="gallery" className="section-bg-stone py-[70px]">
+          <div className="container mx-auto w-[min(1100px,92%)]">
+            <h2 className="font-press-start text-2xl mb-5 text-shadow">作品图库</h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {[1,2,3,4,5,6,7,8].map(i => (
+                <div key={i} className="item-frame p-2 bg-mc-ui flex items-center justify-center">
+                  <Image src={`/assets/svg/torch.svg`} alt={`作品 ${i}`} width={120} height={80} className="pixelated" />
+                </div>
+              ))}
+            </div>
+            <p className="mt-3 text-sm text-[#e6ffe6]">点击图片可查看大图与项目说明（暂为占位，后续可链接具体项目页）。</p>
+          </div>
+        </section>
+
+        <section id="join" className="section-bg-dirt py-[70px]">
+          <div className="container mx-auto w-[min(1100px,92%)]">
+            <h2 className="font-press-start text-2xl mb-5 text-shadow">加入我们</h2>
+            <div className="mc-card">
+              <p>欢迎所有热爱 Minecraft 的同学加入。我们定期组织线下活动与线上合作。</p>
+              <ol className="list-decimal list-inside mt-2">
+                <li>填写线上申请表（或扫码直接加入社群）</li>
+                <li>参加新人见面会，了解社团规则与服务器守则</li>
+                <li>领取新人礼包与入社认证</li>
+              </ol>
+              <div className="mt-3 flex gap-3">
+                <a href="#join" className="mc-btn primary">填写申请</a>
+                <a href="#contact" className="mc-btn">联系管理员</a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="contact" className="section-bg-stone py-[70px]">
+          <div className="container mx-auto w-[min(1100px,92%)]">
+            <h2 className="font-press-start text-2xl mb-5 text-shadow">联系我们</h2>
+            <div className="sign-board-bg border-4 border-black shadow-[0_6px_0_#000] p-4">
+              <p>有问题或想合作？欢迎通过以下方式联系：</p>
+              <ul className="mt-2">
+                <li>QQ群/Discord：见社团公告</li>
+                <li>管理员邮箱：example@swpumc.cn （示例，需要替换）</li>
+                <li>线下咨询：西南石油大学南充校区学生事务中心</li>
+              </ul>
             </div>
           </div>
         </section>
