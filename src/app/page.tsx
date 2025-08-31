@@ -31,45 +31,48 @@ export default function Home() {
     document.body.classList.toggle('theme-nether', isNetherTheme);
   }, [isNetherTheme]);
 
-  const handleThemeToggle = () => {
+  const handleThemeToggle = useCallback(() => {
     setIsNetherTheme(prev => !prev);
     showToast(isNetherTheme ? '进度达成：回到主世界。' : '进度达成：传送至下界！');
-  };
+  }, [isNetherTheme, showToast]);
 
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
     const key = e.key.toLowerCase();
     if (key === 'b') setShowBossBar(prev => !prev);
     if (key === 'f') setShowDebug(prev => !prev);
     if (key === 'g') handleThemeToggle();
-  }, [isNetherTheme]);
+  }, [handleThemeToggle]);
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleKeyDown]);
 
-  const handleScroll = () => {
-    const scrollTop = window.scrollY;
-    const docH = document.body.scrollHeight - window.innerHeight;
-    const pct = docH > 0 ? scrollTop / docH : 0;
-    
-    setXp({
-      level: Math.max(1, Math.floor(pct * 30)),
-      progress: Math.max(0, Math.min(100, pct * 100)),
-    });
-
-    const x = (Math.sin(scrollTop / 300) * 100).toFixed(1);
-    const z = (Math.cos(scrollTop / 300) * 100).toFixed(1);
-    const y = 64 + Math.round((1 - pct) * 20);
-    setCoords({ x, y, z });
-  };
-
   useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      const docH = document.body.scrollHeight - window.innerHeight;
+      const pct = docH > 0 ? scrollTop / docH : 0;
+
+      setXp({
+        level: Math.max(1, Math.floor(pct * 30)),
+        progress: Math.max(0, Math.min(100, pct * 100)),
+      });
+
+      const x = (Math.sin(scrollTop / 300) * 100).toFixed(1);
+      const z = (Math.cos(scrollTop / 300) * 100).toFixed(1);
+      const y = 64 + Math.round((1 - pct) * 20);
+      setCoords({ x, y, z });
+    };
+
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll(); // Initial call
-    setTimeout(() => showToast('进度达成：发现“萤石社”'), 800);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    const t = setTimeout(() => showToast('进度达成：发现“萤石社”'), 800);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      clearTimeout(t);
+    };
+  }, [showToast]);
 
   return (
     <>

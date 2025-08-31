@@ -6,7 +6,7 @@ export default function FontLoader() {
   useEffect(() => {
     async function rewriteCSS(main: string | undefined, callback?: string) {
       if (!main) return;
-      let target = 'main';
+      const target = 'main';
       try {
         const res = await fetch(main, { method: 'GET', mode: 'cors' });
         const CSS_TEXT = await res.text();
@@ -27,11 +27,9 @@ export default function FontLoader() {
             return;
           } catch (err2) {
             // swallow - fonts optional
-            // eslint-disable-next-line no-console
             console.warn('FontLoader: failed to load fallback font CSS', err2);
           }
         } else {
-          // eslint-disable-next-line no-console
           console.warn('FontLoader: failed to load font CSS', err);
         }
       }
