@@ -1,19 +1,19 @@
 import type { Metadata } from "next";
-import { Noto_Sans_SC, Press_Start_2P } from "next/font/google";
 import "./globals.css";
 import FontLoader from '@/components/FontLoader';
 
-const pressStart2P = Press_Start_2P({
-  subsets: ["latin"],
-  weight: "400",
+// 使用本地字体变量，避免Google字体下载失败
+const pressStart2P = {
   variable: "--font-press-start-2p",
-});
+};
 
-const notoSansSC = Noto_Sans_SC({
-  subsets: ["latin"],
-  weight: ["400", "700"],
+const notoSansSC = {
   variable: "--font-noto-sans-sc",
-});
+};
+
+const minecraftAE = {
+  variable: "--font-minecraft-ae",
+};
 
 export const metadata: Metadata = {
   title: "Minecraft 萤石社 | 西南石油大学南充校区",
@@ -67,7 +67,7 @@ export default function RootLayout({
   return (
     <html lang="zh-CN">
       <body
-        className={`${pressStart2P.variable} ${notoSansSC.variable} font-noto-sans theme-overworld`}
+        className={`${pressStart2P.variable} ${notoSansSC.variable} ${minecraftAE.variable} font-minecraft-ae theme-overworld`}
       >
   <FontLoader />
         {children}

@@ -4,6 +4,10 @@ import { useEffect } from 'react';
 
 export default function FontLoader() {
   useEffect(() => {
+    // 注释掉远程字体加载，因为我们现在使用本地 Minecraft 字体
+    console.log('FontLoader: 使用本地 Minecraft AE 字体，跳过远程字体加载');
+    
+    /*
     async function rewriteCSS(main: string | undefined, callback?: string) {
       if (!main) return;
       try {
@@ -38,6 +42,7 @@ export default function FontLoader() {
       'https://fontsapi.zeoseven.com/571/main/result.css',
       'https://fontsapi-storage.zeoseven.com/571/main/result.css'
     );
+    */
   }, []);
 
   return null;

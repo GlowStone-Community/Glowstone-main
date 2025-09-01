@@ -23,9 +23,10 @@ const config: Config = {
         'end': 'var(--end)',
       },
       fontFamily: {
-        'press-start': ['"Press Start 2P"', 'monospace'],
-        'noto-sans': ['"Noto Sans SC"', 'sans-serif'],
-        'minecraft': ['"Minecraft", "Press Start 2P"', 'monospace'],
+        'press-start': ['var(--font-press-start-2p)', '"Press Start 2P"', 'monospace'],
+        'noto-sans': ['var(--font-noto-sans-sc)', '"Noto Sans SC"', 'sans-serif'],
+        'minecraft': ['"Minecraft AE"', '"Press Start 2P"', 'monospace'],
+        'minecraft-ae': ['var(--font-minecraft-ae)', '"Minecraft AE"', '"Press Start 2P"', 'monospace'],
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",

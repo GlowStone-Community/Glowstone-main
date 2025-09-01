@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+/* 定义本地 Minecraft 字体 */
+@font-face {
+  font-family: 'Minecraft AE';
+  src: url('/fonts/5_Minecraft AE(支持中文).ttf') format('truetype');
+  font-display: swap;
+  font-weight: normal;
+  font-style: normal;
+}
+
 :root {
   --mc-green: #3c8527;
   --mc-darker-green: #2d641e;
@@ -22,6 +31,11 @@
   --block-stone: #9e9e9e;
   --block-wood: #a67c52;
   --ui-shadow: #000;
+  
+  /* Font variables for Tailwind */
+  --font-minecraft-ae: "Minecraft AE", "Press Start 2P", monospace;
+  --font-press-start-2p: "Press Start 2P", monospace;
+  --font-noto-sans-sc: "Noto Sans SC", sans-serif;
 }
 
 /* Webkit滚动条不可见 */
@@ -38,8 +52,8 @@ body {
   color: var(--mc-white);
   background: #2b2b2b;
   line-height: 1.6;
-  /* 首选：Fusion Pixel 12px（通过 FontLoader 注入），其次 Noto Sans SC 回退 */
-  font-family: "Fusion Pixel 12px P zh_hans", "Noto Sans SC", system-ui,
+  /* 使用本地 Minecraft 字体作为主字体，保留合理的回退方案 */
+  font-family: "Minecraft AE", "Press Start 2P", "Noto Sans SC", system-ui,
     -apple-system, Segoe UI, Roboto, Arial, "Microsoft Yahei", sans-serif;
   /* 自定义鼠标指针 */
   cursor: url('/cursor/SWORD.png'), auto;
@@ -48,7 +62,7 @@ body {
 html,
 body,
 * {
-  font-family: "Fusion Pixel 12px P zh_hans", "Noto Sans SC", system-ui,
+  font-family: "Minecraft AE", "Press Start 2P", "Noto Sans SC", system-ui,
     -apple-system, Segoe UI, Roboto, Arial, "Microsoft Yahei", sans-serif;
 }
 
