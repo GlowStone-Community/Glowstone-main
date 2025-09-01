@@ -115,7 +115,7 @@ export default function Home() {
             <div className="flex justify-center">
               <SignBoard title="萤石社公告">
                 <p>这里是热爱 Minecraft 的同学们的聚集地...</p>
-                <ul className="list-disc list-inside mt-2.5">
+                <ul>
                   <li>红石工程：从活塞门到自动化农场，效率V安排！</li>
                   <li>建筑创造：方块也能有温度，像素也能有灵魂。</li>
                   <li>联机活动：开荒、Boss战、主题赛季，苦力怕：嘶——砰！</li>
