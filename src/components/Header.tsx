@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import Player from './Player/player';
 
 const navLinks = [
   { href: '#about', text: '了解萤石社' },
@@ -60,6 +61,9 @@ export default function Header() {
           />
         )}
       </div>
+
+      {/* 唱片机播放器组件实现 */}
+      {<Player />}
       
       {/* 独立的绳子按钮 */}
       <button

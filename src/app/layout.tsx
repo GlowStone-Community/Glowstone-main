@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import FontLoader from '@/components/FontLoader';
+import { MouseProvider } from "@/components/MouseProvider";
+import { CustomCursor } from "@/components/CustomCursor";
 
 // 使用本地字体变量，避免Google字体下载失败
 const pressStart2P = {
@@ -69,8 +71,11 @@ export default function RootLayout({
       <body
         className={`${pressStart2P.variable} ${notoSansSC.variable} ${minecraftAE.variable} font-minecraft-ae theme-overworld`}
       >
-  <FontLoader />
-        {children}
+        <MouseProvider>
+          <FontLoader />
+          <CustomCursor />
+          {children}
+        </MouseProvider>
       </body>
     </html>
   );

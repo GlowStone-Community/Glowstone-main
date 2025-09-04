@@ -9,11 +9,14 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@mmt817/pixel-ui": "^1.6.0",
+    "axios": "^1.11.0",
     "framer-motion": "^12.23.12",
     "motion": "^12.23.12",
     "next": "15.5.2",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "react-h5-audio-player": "^3.10.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

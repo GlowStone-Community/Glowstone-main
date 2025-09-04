@@ -7,8 +7,6 @@ interface LoadingProps {
 }
 
 export default function Loading({ show }: LoadingProps) {
-  console.log('Loading component render:', show); // 调试信息
-  
   return (
     <AnimatePresence>
       {show && (
