@@ -17,11 +17,15 @@ export interface MusicItem {
   id?: string;
 }
 
-// 预设音乐字典
+// 预设音乐字典 - 使用本地C418音乐文件
 export const MUSIC_DICT: Record<string, string> = {
-  'Stal': "https://m701.music.126.net/20250905061623/56b08bf6628076c0f626ec8f5c9612e7/jdymusic/obj/wo3DlMOGwrbDjj7DisKw/27979907781/5b87/a0b2/bcd0/9d0b44d4bf4a239c7f728d812c368edc.mp3",
-  'Cat': "https://m701.music.126.net/20250905061349/78d04b3d4a4f363d1be5de9743cb4daf/jdymusic/obj/wo3DlMOGwrbDjj7DisKw/15034083571/f0c7/cbb8/2ddc/2a704cd2b93e9cc4f352017f87ccf005.mp3",
-  'Minecraft': 'https://m801.music.126.net/20250905053724/1e0109d1cab5cff04f73be75dbc45971/jdymusic/obj/wo3DlMOGwrbDjj7DisKw/15034086247/9ea2/cad2/42a3/c7f4dcbd4951840881e0f3ad9bddfac3.mp3'
+  'C418 - Danny': '/c418-music/C418 - Danny.flac',
+  'C418 - Haggstrom': '/c418-music/C418 - Haggstrom.flac',
+  'C418 - Living Mice': '/c418-music/C418 - Living Mice.flac',
+  'C418 - Minecraft': '/c418-music/C418 - Minecraft.flac',
+  'C418 - Subwoofer Lullaby': '/c418-music/C418 - Subwoofer Lullaby.flac',
+  'C418 - Sweden': '/c418-music/C418 - Sweden.flac',
+  'C418 - Wet Hands': '/c418-music/C418 - Wet Hands.flac'
 }
 
 // 音乐服务类

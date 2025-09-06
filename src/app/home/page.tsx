@@ -14,12 +14,25 @@ import SignBoard from '@/components/SignBoard';
 
 // Mock data for cards, etc.
 const activities = [
-  { icon: 'diamond', title: '新生入坑指南', desc: 'Java/基岩版差异、常用快捷键、常见误区，少走弯路从这里开始！' },
-  { icon: 'torch', title: '夜间光影摄影', desc: '光影材质安装教学，拍出属于南充夜色的像素大片。' },
-  { icon: 'creeper', title: '联机开荒赛季', desc: '打工是不可能打工的！只会打怪、挖矿、盖房子。' },
-  { icon: 'diamond', title: '红石工程挑战', desc: '从零基础到准工程师，做一个会接线的"电工"。' },
-  { icon: 'torch', title: '建筑主题活动', desc: '像素艺术/中式园林/学院风建筑，拒绝"豆腐块"。' },
-  { icon: 'creeper', title: '赛事与联动', desc: '小游戏赛、PVP对抗、跨社团合作，发光发热！' },
+  { icon: 'skull_steve.png', title: '新生入坑指南', desc: 'Java/基岩版差异、常用快捷键、常见误区，少走弯路从这里开始！' },
+  { icon: 'apple_golden.png', title: '夜间光影摄影', desc: '光影材质安装教学，拍出属于南充夜色的像素大片。' },
+  { icon: 'diamond.png', title: '联机开荒赛季', desc: '打工是不可能打工的！只会打怪、挖矿、盖房子。' },
+  { icon: 'redstone_dust.png', title: '红石工程挑战', desc: '从零基础到准工程师，做一个会接线的"电工"。' },
+  { icon: 'iron_pickaxe.png', title: '建筑主题活动', desc: '像素艺术/中式园林/学院风建筑，拒绝"豆腐块"。' },
+  { icon: 'diamond_sword.png', title: '赛事与联动', desc: '小游戏赛、PVP对抗、跨社团合作，发光发热！' },
+];
+
+// 作品图库数据
+const galleryWorks = [
+  { src: '/works/1.png', alt: '作品 1' },
+  { src: '/works/2.png', alt: '作品 2' },
+  { src: '/works/3.png', alt: '作品 3' },
+  { src: '/works/4.jpg', alt: '作品 4' },
+  { src: '/works/5.webp', alt: '作品 5' },
+  { src: '/works/6.jpg', alt: '作品 6' },
+  { src: '/works/7.webp', alt: '作品 7' },
+  { src: '/works/8.jpg', alt: '作品 8' },
+  { src: '/works/9.webp', alt: '作品 9' },
 ];
 
 export default function Home() {
@@ -131,14 +144,14 @@ export default function Home() {
             <h2 className="font-press-start text-2xl mb-5 text-shadow">活动一览</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {activities.map(act => (
-                <article key={act.title} className="mc-card text-black p-3">
-                  <div className="flex items-center gap-3">
-                    <div className="item-frame w-12 h-12 flex items-center justify-center">
-                      <Image src={`/assets/svg/${act.icon}.svg`} alt={act.title} width={42} height={42} className="pixelated" />
+                <article key={act.title} className="mc-card text-black p-2 h-16">
+                  <div className="flex items-center gap-2 h-full">
+                    <div className="item-frame w-40 h-20 flex items-center justify-center flex-shrink-0">
+                      <Image src={`/items/${act.icon}`} alt={act.title} width={80} height={80} className="pixelated" quality={100} />
                     </div>
-                    <div>
-                      <h3 className="font-press-start text-sm my-0">{act.title}</h3>
-                      <p className="text-sm mt-1">{act.desc}</p>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-press-start text-xs my-0 leading-tight truncate">{act.title}</h3>
+                      <p className="text-xs mt-0.5 leading-tight line-clamp-2">{act.desc}</p>
                     </div>
                   </div>
                 </article>
@@ -151,12 +164,12 @@ export default function Home() {
           <div className="container mx-auto w-[min(1100px,92%)]">
             <h2 className="font-press-start text-2xl mb-5 text-shadow">社团服务器</h2>
 
-            <div className="sign-board-bg border-4 border-black shadow-[0_6px_0_#000] text-[#210] p-4">
-              <p className=''>我们的联机服务器提供生存、创意与迷你游戏区。想加入请看下方入口或扫码联系管理员。</p>
-              <ul className="mt-2.5">
-                <li>版本：Java & Bedrock（跨平台信息见社团公告）</li>
-                <li>常驻插件：区域保护、家园、经济与小游戏</li>
-                <li>如何获取：填写加入申请或现场扫码加入我们</li>
+            <div className="oak-planks-card border-4 border-black shadow-[0_6px_0_#000] text-[#2d1810] p-6 rounded-sm">
+              <p className='font-semibold mb-3'>我们的联机服务器提供生存、创意与迷你游戏区。想加入请看下方入口或扫码联系管理员。</p>
+              <ul className="mt-2.5 space-y-1">
+                <li className="flex items-start"><span className="text-[#8b4513] mr-2">▪</span>版本：Java & Bedrock（跨平台信息见社团公告）</li>
+                <li className="flex items-start"><span className="text-[#8b4513] mr-2">▪</span>常驻插件：区域保护、家园、经济与小游戏</li>
+                <li className="flex items-start"><span className="text-[#8b4513] mr-2">▪</span>如何获取：填写加入申请或现场扫码加入我们</li>
               </ul>
             </div>
           </div>
@@ -167,13 +180,20 @@ export default function Home() {
           <div className="container mx-auto w-[min(1100px,92%)]">
             <h2 className="font-press-start text-2xl mb-5 text-shadow">作品图库</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {[1,2,3,4,5,6,7,8].map(i => (
-                <div key={i} className="item-frame p-2 bg-mc-ui flex items-center justify-center">
-                  <Image src={`/assets/svg/torch.svg`} alt={`作品 ${i}`} width={120} height={80} className="pixelated" />
+              {galleryWorks.slice(0, 8).map((work, index) => (
+                <div key={index} className="item-frame p-2 bg-mc-ui flex items-center justify-center overflow-hidden">
+                  <Image 
+                    src={work.src} 
+                    alt={work.alt} 
+                    width={400} 
+                    height={300} 
+                    className="object-contain w-full h-auto max-w-full max-h-full" 
+                    quality={95}
+                  />
                 </div>
               ))}
             </div>
-            <p className="mt-3 text-sm text-[#e6ffe6]">点击图片可查看大图与项目说明（暂为占位，后续可链接具体项目页）。</p>
+            <p className="mt-3 text-sm text-[#e6ffe6]">点击图片可查看大图与项目说明。</p>
           </div>
         </section>
 
@@ -198,7 +218,7 @@ export default function Home() {
         <section id="contact" className="section-bg-stone py-[20px]">
           <div className="container mx-auto w-[min(1100px,92%)]">
             <h2 className="font-press-start text-2xl mb-5 text-shadow">联系我们</h2>
-            <div className="sign-board-bg border-4 border-black shadow-[0_6px_0_#000] p-4">
+            <div className="mc-contact-panel">
               <p>有问题或想合作？欢迎通过以下方式联系：</p>
               <ul className="mt-2">
                 <li>QQ群/Discord：见社团公告</li>

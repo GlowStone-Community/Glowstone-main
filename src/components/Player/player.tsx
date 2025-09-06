@@ -16,12 +16,50 @@ export default function Player() {
     const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(0);
     const [volume, setVolume] = useState(0.33); // 初始音量为1/3
+    const [position, setPosition] = useState({ x: 20, y: typeof window !== 'undefined' ? window.innerHeight - 160 : 500 }); // 左下角位置
+    const [isDragging, setIsDragging] = useState(false);
+    const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+    const [hasAutoPlayed, setHasAutoPlayed] = useState(false);
+    const [isRandomMode, setIsRandomMode] = useState(true); // 默认随机播放
     const playerRef = useRef<HTMLDivElement>(null);
     const audioRef = useRef<HTMLAudioElement>(null);
     const volumeBarRef = useRef<HTMLDivElement>(null);
 
     const togglePlayer = () => {
         setIsPlayerVisible(!isPlayerVisible);
+    };
+
+    // 拖动事件处理
+    const handleMouseDown = (e: React.MouseEvent) => {
+        if (e.button !== 0) return; // 只处理左键
+        setIsDragging(true);
+        const rect = playerRef.current?.getBoundingClientRect();
+        if (rect) {
+            setDragOffset({
+                x: e.clientX - rect.left,
+                y: e.clientY - rect.top
+            });
+        }
+        e.preventDefault();
+    };
+
+    const handleMouseMove = (e: MouseEvent) => {
+        if (!isDragging) return;
+        const newX = e.clientX - dragOffset.x;
+        const newY = e.clientY - dragOffset.y;
+        
+        // 限制在窗口范围内
+        const maxX = window.innerWidth - 128;
+        const maxY = window.innerHeight - 128;
+        
+        setPosition({
+            x: Math.max(0, Math.min(newX, maxX)),
+            y: Math.max(0, Math.min(newY, maxY))
+        });
+    };
+
+    const handleMouseUp = () => {
+        setIsDragging(false);
     };
 
     // 获取音乐详细信息,这里结合api使用
@@ -59,7 +97,21 @@ export default function Player() {
         };
 
         initializeMusic();
-    }, []);
+        
+        // 页面加载时自动播放第一首音乐
+        const autoPlayTimer = setTimeout(() => {
+            if (!hasAutoPlayed && audioRef.current) {
+                audioRef.current.play().then(() => {
+                    setIsPlaying(true);
+                    setHasAutoPlayed(true);
+                }).catch((error) => {
+                    console.log('自动播放失败，可能需要用户交互:', error);
+                });
+            }
+        }, 1000);
+        
+        return () => clearTimeout(autoPlayTimer);
+    }, [hasAutoPlayed]);
 
     // 切换音乐
     const switchMusic = async (music: MusicItem) => {
@@ -103,25 +155,50 @@ export default function Player() {
     const playPrevious = () => {
         if (musicList.length === 0) return;
         
-        const currentIndex = musicList.findIndex(music => music.id === currentMusic?.id || music.name === currentMusic?.name);
-        const previousIndex = currentIndex > 0 ? currentIndex - 1 : musicList.length - 1;
-        const previousMusic = musicList[previousIndex];
-        
-        if (previousMusic) {
-            switchMusic(previousMusic);
+        if (isRandomMode) {
+            // 随机播放模式：随机选择一首歌
+            const randomIndex = Math.floor(Math.random() * musicList.length);
+            const randomMusic = musicList[randomIndex];
+            if (randomMusic) {
+                switchMusic(randomMusic);
+            }
+        } else {
+            // 顺序播放模式：播放上一首
+            const currentIndex = musicList.findIndex(music => music.id === currentMusic?.id || music.name === currentMusic?.name);
+            const previousIndex = currentIndex > 0 ? currentIndex - 1 : musicList.length - 1;
+            const previousMusic = musicList[previousIndex];
+            
+            if (previousMusic) {
+                switchMusic(previousMusic);
+            }
         }
     };
 
     const playNext = () => {
         if (musicList.length === 0) return;
         
-        const currentIndex = musicList.findIndex(music => music.id === currentMusic?.id || music.name === currentMusic?.name);
-        const nextIndex = currentIndex < musicList.length - 1 ? currentIndex + 1 : 0;
-        const nextMusic = musicList[nextIndex];
-        
-        if (nextMusic) {
-            switchMusic(nextMusic);
+        if (isRandomMode) {
+            // 随机播放模式：随机选择一首歌
+            const randomIndex = Math.floor(Math.random() * musicList.length);
+            const randomMusic = musicList[randomIndex];
+            if (randomMusic) {
+                switchMusic(randomMusic);
+            }
+        } else {
+            // 顺序播放模式：播放下一首
+            const currentIndex = musicList.findIndex(music => music.id === currentMusic?.id || music.name === currentMusic?.name);
+            const nextIndex = currentIndex < musicList.length - 1 ? currentIndex + 1 : 0;
+            const nextMusic = musicList[nextIndex];
+            
+            if (nextMusic) {
+                switchMusic(nextMusic);
+            }
         }
+    };
+
+    // 切换播放模式
+    const togglePlayMode = () => {
+        setIsRandomMode(!isRandomMode);
     };
 
     // 音频事件处理
@@ -136,18 +213,23 @@ export default function Player() {
             setDuration(audioRef.current.duration);
             // 设置初始音量
             audioRef.current.volume = volume;
-            // 自动播放
-            audioRef.current.play().then(() => {
-                setIsPlaying(true);
-            }).catch((error) => {
-                console.log('自动播放失败:', error);
-            });
+            // 如果还没有自动播放过，则尝试自动播放
+            if (!hasAutoPlayed) {
+                audioRef.current.play().then(() => {
+                    setIsPlaying(true);
+                    setHasAutoPlayed(true);
+                }).catch((error) => {
+                    console.log('自动播放失败，可能需要用户交互:', error);
+                });
+            }
         }
     };
 
     const handleEnded = () => {
         setIsPlaying(false);
         setCurrentTime(0);
+        // 自动播放下一首
+        playNext();
     };
 
     // 音量控制
@@ -168,10 +250,25 @@ export default function Player() {
         }
     }, [volume, currentMusic]);
 
+    // 拖动事件监听器
+    useEffect(() => {
+        if (isDragging) {
+            document.addEventListener('mousemove', handleMouseMove);
+            document.addEventListener('mouseup', handleMouseUp);
+            document.body.style.userSelect = 'none';
+        }
+
+        return () => {
+            document.removeEventListener('mousemove', handleMouseMove);
+            document.removeEventListener('mouseup', handleMouseUp);
+            document.body.style.userSelect = '';
+        };
+    }, [isDragging, dragOffset]);
+
     // 点击外部区域关闭播放器
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
-            if (playerRef.current && !playerRef.current.contains(event.target as Node)) {
+            if (playerRef.current && !playerRef.current.contains(event.target as Node) && !isDragging) {
                 setIsPlayerVisible(false);
             }
         };
@@ -183,14 +280,24 @@ export default function Player() {
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
-    }, [isPlayerVisible]);
+    }, [isPlayerVisible, isDragging]);
 
     return (
-        <div className="fixed top-10 left-5 w-32 h-32 z-[9999]" ref={playerRef}>
+        <div 
+            className="fixed w-32 h-32 z-[9999]" 
+            ref={playerRef}
+            style={{
+                left: `${position.x}px`,
+                top: `${position.y}px`,
+                cursor: isDragging ? 'grabbing' : 'grab'
+            }}
+        >
             <motion.div 
                 className="w-32 h-32 cursor-pointer transition-transform duration-200 hover:scale-105"
                 onClick={togglePlayer}
+                onMouseDown={handleMouseDown}
                 whileTap={{ scale: 0.95 }}
+                style={{ cursor: isDragging ? 'grabbing' : 'pointer' }}
             >
                 <Image src="/Player/player.png" alt="Player" width={128} height={128} />
             </motion.div>
@@ -259,6 +366,18 @@ export default function Player() {
                                         <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
                                             <path d="M4.555 5.168A1 1 0 003 6v8a1 1 0 001.555.832L10 11.202V14a1 1 0 001.555.832l6-4a1 1 0 000-1.664l-6-4A1 1 0 0010 6v2.798l-5.445-3.63z"/>
                                         </svg>
+                                    </button>
+                                    
+                                    <button onClick={togglePlayMode} className="control-btn" title={isRandomMode ? '随机播放' : '顺序播放'}>
+                                        {isRandomMode ? (
+                                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                                                <path d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z"/>
+                                            </svg>
+                                        ) : (
+                                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                                                <path d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"/>
+                                            </svg>
+                                        )}
                                     </button>
                                 </div>
                             </div>
