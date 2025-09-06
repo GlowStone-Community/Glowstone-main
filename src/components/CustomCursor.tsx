@@ -7,13 +7,7 @@ import Image from 'next/image';
 export const CustomCursor = () => {
     const cursorX = useMotionValue(-100);
     const cursorY = useMotionValue(-100);
-    const [particles, setParticles] = useState<Array<{
-        id: number;
-        x: number;
-        y: number;
-        delay: number;
-        scale: number;
-    }>>([]);
+
     const [isClient, setIsClient] = useState(false);
 
     // add effect of spring to the cursor
@@ -26,27 +20,7 @@ export const CustomCursor = () => {
         damping: 20     // 增加阻尼，减少震荡
     });
 
-    // 生成粒子位置
-    const generateParticles = () => {
-        const newParticles = [];
-        const particleCount = 6; // 减少粒子数量，让效果更清晰
-        
-        for (let i = 0; i < particleCount; i++) {
-            // 随机位置，不按圆形排列
-            const x = (Math.random() - 0.5) * 80; // -40px 到 40px
-            const y = (Math.random() - 0.5) * 80; // -40px 到 40px
-            
-            newParticles.push({
-                id: i,
-                x,
-                y,
-                delay: Math.random() * 3, // 随机延迟 0-3秒
-                scale: 0.4 + Math.random() * 0.8 // 0.4-1.2 更大的大小差异
-            });
-        }
-        
-        setParticles(newParticles);
-    };
+
 
     // use useEffect to update the cursor position
     useEffect(() => {
@@ -63,12 +37,7 @@ export const CustomCursor = () => {
         setIsClient(true);
     }, []);
 
-    // 初始化粒子
-    useEffect(() => {
-        if (isClient) {
-            generateParticles();
-        }
-    }, [isClient]);
+
 
     return(
         <motion.div

@@ -15,11 +15,9 @@ interface MinecraftHUDProps {
 export default function MinecraftHUD({ 
   health = 20, 
   hunger: initialHunger = 20, 
-  level = 1, 
   progress = 0 
 }: MinecraftHUDProps) {
   const [hunger, setHunger] = useState(initialHunger);
-  const hungerBars = Math.ceil(hunger / 2);
   const [isVisible, setIsVisible] = useState(true);
 
   // 计算每个心形应该显示的状态

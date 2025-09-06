@@ -61,7 +61,7 @@ class AxiosChain {
   private instance: AxiosInstance
   private _url: string = ''
   private _method: string = 'get'
-  private _data: any = undefined
+  private _data: unknown = undefined
 
   constructor(instance: AxiosInstance) {
     this.instance = instance
@@ -83,17 +83,17 @@ class AxiosChain {
     return this
   }
 
-  header(key: string, value: any) {
+  header(key: string, value: string | number) {
     this.config.headers![key] = value
     return this
   }
 
-  headers(headersObj: Record<string, any>) {
+  headers(headersObj: Record<string, string | number>) {
     this.config.headers = { ...this.config.headers, ...headersObj }
     return this
   }
 
-  param(key: string, value: any) {
+  param(key: string, value: string | number) {
     this.config.params![key] = value
     return this
   }
@@ -108,7 +108,7 @@ class AxiosChain {
     return this
   }
 
-  data(data: any) {
+  data(data: unknown) {
     this._data = data
     return this
   }

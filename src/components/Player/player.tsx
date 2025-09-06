@@ -3,20 +3,20 @@
 import { motion } from "motion/react";
 import Image from "next/image";
 import { useState, useRef, useEffect } from 'react';
-import { musicService, getAllMusicItems, type MusicItem } from '../../services/musicService';
+import { getAllMusicItems, type MusicItem } from '../../services/musicService';
 import './index.css';
 
 export default function Player() {
     const [isPlayerVisible, setIsPlayerVisible] = useState(false);
     const [currentMusic, setCurrentMusic] = useState<MusicItem | null>(null);
     const [musicList, setMusicList] = useState<MusicItem[]>([]);
-    const [musicDetails, setMusicDetails] = useState<Record<string, any>>({});
+    const [musicDetails, setMusicDetails] = useState<Record<string, { title: string; artist: string; duration: number }>>({});
     const [isLoading, setIsLoading] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
     const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(0);
     const [volume, setVolume] = useState(0.33); // 初始音量为1/3
-    const [position, setPosition] = useState({ x: 20, y: typeof window !== 'undefined' ? window.innerHeight - 160 : 500 }); // 左下角位置
+    const [position, setPosition] = useState({ x: 20, y: 500 }); // 左下角位置
     const [isDragging, setIsDragging] = useState(false);
     const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
     const [hasAutoPlayed, setHasAutoPlayed] = useState(false);
@@ -63,9 +63,17 @@ export default function Player() {
     };
 
     // 获取音乐详细信息,这里结合api使用
-    const fetchMusicDetails = async (music: MusicItem) => {
-        if (!music.id) return null;
+    const fetchMusicDetails = async (music: MusicItem): Promise<{ title: string; artist: string; duration: number }> => {
+        // 从音乐名称中提取艺术家和标题
+        const parts = music.name.split(' - ');
+        const artist = parts[0] || 'Unknown Artist';
+        const title = parts[1] || music.name;
         
+        return {
+            title,
+            artist,
+            duration: 0 // 默认时长，实际播放时会更新
+        };
     };
 
     // 初始化音乐列表
@@ -86,7 +94,7 @@ export default function Player() {
                     });
                     
                     const detailsResults = await Promise.all(detailsPromises);
-                    const combinedDetails = detailsResults.reduce((acc, curr) => ({ ...acc, ...curr }), {});
+                    const combinedDetails = detailsResults.reduce((acc, curr) => ({ ...acc, ...curr }), {} as Record<string, { title: string; artist: string; duration: number }>);
                     setMusicDetails(combinedDetails);
                 }
             } catch (error) {
@@ -113,18 +121,26 @@ export default function Player() {
         return () => clearTimeout(autoPlayTimer);
     }, [hasAutoPlayed]);
 
+    // 客户端挂载后设置正确的位置
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            setPosition(prev => ({
+                ...prev,
+                y: window.innerHeight - 160
+            }));
+        }
+    }, []);
+
     // 切换音乐
     const switchMusic = async (music: MusicItem) => {
         setCurrentMusic(music);
         
         if (!musicDetails[music.id || music.name]) {
             const details = await fetchMusicDetails(music);
-            if (details) {
-                setMusicDetails(prev => ({
-                    ...prev,
-                    [music.id || music.name]: details
-                }));
-            }
+            setMusicDetails(prev => ({
+                ...prev,
+                [music.id || music.name]: details
+            }));
         }
         
         // 切换音乐后自动播放

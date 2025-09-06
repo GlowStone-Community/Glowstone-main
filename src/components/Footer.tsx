@@ -1,5 +1,3 @@
-import Image from 'next/image';
-
 export default function Footer() {
   return (
     <footer className="site-footer mc-grid-bg text-center border-t-6 border-black py-8">

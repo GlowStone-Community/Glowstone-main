@@ -27,12 +27,11 @@ const galleryWorks = [
   { src: '/works/1.png', alt: '作品 1' },
   { src: '/works/2.png', alt: '作品 2' },
   { src: '/works/3.png', alt: '作品 3' },
-  { src: '/works/4.jpg', alt: '作品 4' },
-  { src: '/works/5.webp', alt: '作品 5' },
-  { src: '/works/6.jpg', alt: '作品 6' },
-  { src: '/works/7.webp', alt: '作品 7' },
-  { src: '/works/8.jpg', alt: '作品 8' },
-  { src: '/works/9.webp', alt: '作品 9' },
+  { src: '/works/4.png', alt: '作品 4' },
+  { src: '/works/5.png', alt: '作品 5' },
+  { src: '/works/6.png', alt: '作品 6' },
+  { src: '/works/7.png', alt: '作品 7' },
+  { src: '/works/8.png', alt: '作品 8' },
 ];
 
 export default function Home() {
