@@ -18,7 +18,7 @@ const activities = [
   { icon: 'apple_golden.png', title: '夜间光影摄影', desc: '光影材质安装教学，拍出属于南充夜色的像素大片。' },
   { icon: 'diamond.png', title: '联机开荒赛季', desc: '打工是不可能打工的！只会打怪、挖矿、盖房子。' },
   { icon: 'redstone_dust.png', title: '红石工程挑战', desc: '从零基础到准工程师，做一个会接线的"电工"。' },
-  { icon: 'iron_pickaxe.png', title: '建筑主题活动', desc: '像素艺术/中式园林/学院风建筑，拒绝"豆腐块"。' },
+  { icon: 'iron_pickaxe.png', title: '建筑主题活动', desc: '像素艺术/中式园林/学院风建筑，拒绝"豆腐块"，“火柴盒”。' },
   { icon: 'diamond_sword.png', title: '赛事与联动', desc: '小游戏赛、PVP对抗、跨社团合作，发光发热！' },
 ];
 
@@ -32,7 +32,17 @@ const galleryWorks = [
   { src: '/works/6.png', alt: '作品 6' },
   { src: '/works/7.png', alt: '作品 7' },
   { src: '/works/8.png', alt: '作品 8' },
+  { src: '/works/9.png', alt: '作品 9' },
+  { src: '/works/10.png', alt: '作品 10' },
+  { src: '/works/11.png', alt: '作品 11' },
+  { src: '/works/12.png', alt: '作品 12' },
+  { src: '/works/13.png', alt: '作品 13' },
+  { src: '/works/14.png', alt: '作品 14' },
+  { src: '/works/15.png', alt: '作品 15' },
+  { src: '/works/16.png', alt: '作品 16' },
 ];
+
+const GALLERY_ITEMS_PER_PAGE = 6;
 
 export default function Home() {
   const [isNetherTheme, setIsNetherTheme] = useState(false);
@@ -42,6 +52,9 @@ export default function Home() {
   const [xp, setXp] = useState({ level: 1, progress: 0 });
   const [coords, setCoords] = useState({ x: '0.0', y: 64, z: '0.0' });
   const { toast, showToast } = useToast();
+  
+  // Pagination state
+  const [galleryPage, setGalleryPage] = useState(1);
 
   useEffect(() => {
     document.body.classList.toggle('theme-nether', isNetherTheme);
@@ -103,132 +116,135 @@ export default function Home() {
     };
   }, [showToast]);
 
+  // Calculate pagination
+  const totalPages = Math.ceil(galleryWorks.length / GALLERY_ITEMS_PER_PAGE);
+  const currentGalleryItems = galleryWorks.slice(
+    (galleryPage - 1) * GALLERY_ITEMS_PER_PAGE,
+    galleryPage * GALLERY_ITEMS_PER_PAGE
+  );
+
+  const handlePageChange = (page: number) => {
+    setGalleryPage(page);
+  };
+
   return (
     <>
       <Header />
       <main id="home">
 
         <section className="hero-bg relative border-black py-[70px] pb-[90px]">
-          <div className="container mx-auto w-[min(1100px,92%)]">
-            <h1 className="font-press-start mc-hero-title text-2xl lg:text-3xl 
-            text-shadow-lg">Minecraft 萤石社</h1>
-            <p className="text-lg text-[#e6ffe6]">西南石油大学南充校区 · 今天也要发光！</p>
-            <div className="flex items-center gap-3 mt-4">
-              <button onClick={() => showToast('进度达成：测试消息1')} className="mc-btn primary">测试进度1</button>
-              <button onClick={() => showToast('进度达成：测试消息2')} className="mc-btn">测试进度2</button>
-              <button onClick={handleThemeToggle} className="mc-btn" aria-pressed={isNetherTheme}>切换主题</button>
-            </div>
+          <div className="container mx-auto w-[min(1100px,92%)] flex flex-col items-center text-center">
+            <h1 className="font-press-start mc-hero-title text-[3.4rem] sm:text-[4rem] md:text-[4rem] lg:text-[4rem] 
+            text-shadow-lg mb-8 leading-none tracking-tighter">Minecraft 萤石社</h1>
+            <strong className="text-lg text-[#e6ffe6] font-bold drop-shadow-md">欢迎每一位热爱 Minecraft 的同学加入！</strong>
           </div>
         </section>
 
-        <section id="about" className={`${isNetherTheme ? 'section-bg-netherrack' : 'section-bg-dirt'} py-[80px] select-none`}>
-          <div className="container mx-auto w-[min(1100px,92%)]">
-            <h2 className="font-press-start text-2xl text-shadow">了解萤石社</h2>
-            <div className="flex justify-center">
-              <SignBoard title="萤石社公告">
-                <p>这里是热爱 Minecraft 的同学们的聚集地...</p>
-                <ul>
-                  <li>红石工程：从活塞门到自动化农场，效率V安排！</li>
-                  <li>建筑创造：方块也能有温度，像素也能有灵魂。</li>
-                  <li>联机活动：开荒、Boss战、主题赛季，苦力怕：嘶——砰！</li>
-                  <li>技术交流：服务器搭建、资源整合、指令数据包、摄影剪辑。</li>
-                </ul>
-              </SignBoard>
-            </div>
-          </div>
-        </section>
-
-        <section id="activities" className="section-bg-stone py-[70px]">
-          <div className="container mx-auto w-[min(1100px,92%)]">
-            <h2 className="font-press-start text-2xl mb-5 text-shadow">活动一览</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {activities.map(act => (
-                <article key={act.title} className="mc-card text-black p-2 h-16">
-                  <div className="flex items-center gap-2 h-full">
-                    <div className="item-frame w-40 h-20 flex items-center justify-center flex-shrink-0">
-                      <Image src={`/items/${act.icon}`} alt={act.title} width={80} height={80} className="pixelated" quality={100} />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-press-start text-xs my-0 leading-tight truncate">{act.title}</h3>
-                      <p className="text-xs mt-0.5 leading-tight line-clamp-2">{act.desc}</p>
-                    </div>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-        
-        <section id="server" className={`${isNetherTheme ? 'section-bg-netherrack' : 'section-bg-dirt'} py-[60px]`}>
-          <div className="container mx-auto w-[min(1100px,92%)]">
-            <h2 className="font-press-start text-2xl mb-5 text-shadow">社团服务器</h2>
-
-            <div className="oak-planks-card border-4 border-black shadow-[0_6px_0_#000] text-[#2d1810] p-6 rounded-sm">
-              <p className='font-semibold mb-3'>我们的联机服务器提供生存、创意与迷你游戏区。想加入请看下方入口或扫码联系管理员。</p>
-              <ul className="mt-2.5 space-y-1">
-                <li className="flex items-start"><span className="text-[#8b4513] mr-2">▪</span>版本：Java & Bedrock（跨平台信息见社团公告）</li>
-                <li className="flex items-start"><span className="text-[#8b4513] mr-2">▪</span>常驻插件：区域保护、家园、经济与小游戏</li>
-                <li className="flex items-start"><span className="text-[#8b4513] mr-2">▪</span>如何获取：填写加入申请或现场扫码加入我们</li>
-              </ul>
-            </div>
-          </div>
-          
-        </section>
-
-        <section id="gallery" className="section-bg-stone py-[70px]">
-          <div className="container mx-auto w-[min(1100px,92%)]">
-            <h2 className="font-press-start text-2xl mb-5 text-shadow">作品图库</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {galleryWorks.slice(0, 8).map((work, index) => (
-                <div key={index} className="item-frame p-2 bg-mc-ui flex items-center justify-center overflow-hidden">
-                  <Image 
-                    src={work.src} 
-                    alt={work.alt} 
-                    width={400} 
-                    height={300} 
-                    className="object-contain w-full h-auto max-w-full max-h-full" 
-                    quality={95}
-                  />
-                </div>
-              ))}
-            </div>
-            <p className="mt-3 text-sm text-[#e6ffe6]">点击图片可查看大图与项目说明。</p>
-          </div>
-        </section>
-
-        <section id="join" className={`${isNetherTheme ? 'section-bg-netherrack' : 'section-bg-dirt'} py-[70px]`}>
-          <div className="container mx-auto w-[min(1100px,92%)]">
-            <h2 className="font-press-start text-2xl mb-5 text-shadow">加入我们</h2>
-            <div className="mc-card">
-              <p>欢迎所有热爱 Minecraft 的同学加入。我们定期组织线下活动与线上合作。</p>
-              <ol className="list-decimal list-inside mt-2">
-                <li>填写线上申请表（或扫码直接加入社群）</li>
-                <li>参加新人见面会，了解社团规则与服务器守则</li>
-                <li>领取新人礼包与入社认证</li>
-              </ol>
-              <div className="mt-3 flex gap-3">
-                <a href="#join" className="mc-btn primary">填写申请</a>
-                <a href="#contact" className="mc-btn">联系管理员</a>
+        <div className={isNetherTheme ? 'section-bg-netherrack' : 'section-bg-stone'}>
+          <section id="about" className="py-[80px] select-none">
+            <div className="container mx-auto w-[min(1100px,92%)]">
+              <h2 className="font-press-start text-2xl text-shadow">了解萤石社</h2>
+              <div className="flex justify-center">
+                <SignBoard title="萤石社公告">
+                  <p>这里是热爱 Minecraft 的同学们的聚集地...</p>
+                  <ul>
+                    <li>红石工程：从活塞门到自动化农场，效率V安排！</li>
+                    <li>建筑创造：方块也能有温度，像素也能有灵魂。</li>
+                    <li>联机活动：新服开荒、模组服、社团活动，苦力怕：嘶——砰！</li>
+                    <li>技术交流：服务器搭建、资源整合、指令数据包、摄影剪辑。</li>
+                  </ul>
+                </SignBoard>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
 
-        <section id="contact" className="section-bg-stone py-[20px]">
-          <div className="container mx-auto w-[min(1100px,92%)]">
-            <h2 className="font-press-start text-2xl mb-5 text-shadow">联系我们</h2>
-            <div className="mc-contact-panel">
-              <p>有问题或想合作？欢迎通过以下方式联系：</p>
-              <ul className="mt-2">
-                <li>QQ群/Discord：见社团公告</li>
-                <li>管理员邮箱：example@swpumc.cn （示例，需要替换）</li>
-                <li>线下咨询：西南石油大学南充校区学生事务中心</li>
-              </ul>
+          <section id="activities" className="py-[70px]">
+            <div className="container mx-auto w-[min(1100px,92%)]">
+              <h2 className="font-press-start text-2xl mb-5 text-shadow">活动一览</h2>
+              <div className="grid grid-cols-2 gap-4">
+                {activities.map(act => (
+                  <article key={act.title} className="mc-card text-black p-2 h-24">
+                    <div className="flex items-center gap-3 h-full">
+                      <div className="w-14 flex items-center justify-center flex-shrink-0">
+                        <Image src={`/items/${act.icon}`} alt={act.title} width={48} height={48} className="pixelated" quality={100} />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-press-start text-xs my-0 leading-tight truncate">{act.title}</h3>
+                        <p className="text-xs mt-0.5 leading-tight line-clamp-2">{act.desc}</p>
+                      </div>
+                    </div>
+                  </article>
+                ))}
+              </div>
             </div>
-          </div>
-        </section>
-        
-        {/* Other sections would be componentized similarly */}
+          </section>
+          
+          <section id="server" className="py-[60px]">
+            <div className="container mx-auto w-[min(1100px,92%)]">
+              <h2 className="font-press-start text-2xl mb-5 text-shadow">社团服务器</h2>
+
+              <div className="oak-planks-card border-4 border-black shadow-[0_6px_0_#000] text-[#2d1810] p-6 rounded-sm">
+                <p className='font-semibold mb-3'>我们的联机服务器提供生存、模组和建造</p>
+                <ul className="mt-2.5 space-y-1">
+                  <li className="flex items-start"><span className="text-[#8b4513] mr-2">▪</span>版本：Java & Bedrock</li>
+                  <li className="flex items-start"><span className="text-[#8b4513] mr-2">▪</span>常驻插件：区域保护、家园、经济与小游戏</li>
+                  <li className="flex items-start"><span className="text-[#8b4513] mr-2">▪</span>如何获取：加入社团Q群获取详情。</li>
+                </ul>
+              </div>
+            </div>
+            
+          </section>
+
+          <section id="gallery" className="py-[70px]">
+            <div className="container mx-auto w-[min(1100px,92%)]">
+              <h2 className="font-press-start text-2xl mb-5 text-shadow">作品图库</h2>
+              <div className="grid grid-cols-2 gap-4">
+                {currentGalleryItems.map((work, index) => (
+                  <div key={index} className="item-frame p-2 bg-mc-ui flex items-center justify-center overflow-hidden">
+                    <Image 
+                      src={work.src} 
+                      alt={work.alt} 
+                      width={400} 
+                      height={300} 
+                      className="object-contain w-full h-auto max-w-full max-h-full" 
+                      quality={95}
+                    />
+                  </div>
+                ))}
+              </div>
+              
+              {/* Pagination Controls */}
+              {totalPages > 1 && (
+                <div className="flex justify-center gap-2 mt-8">
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                    <button
+                      key={page}
+                      onClick={() => handlePageChange(page)}
+                      className={`mc-btn text-xs py-2 px-4 ${galleryPage === page ? 'bg-[#a0a0a0] brightness-90' : ''}`}
+                      style={galleryPage === page ? { background: '#8b8b8b', color: '#ffff55', textShadow: '1px 1px #000' } : {}}
+                    >
+                      {page}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          </section>
+
+          <section id="contact" className="py-[20px]">
+            <div className="container mx-auto w-[min(1100px,92%)]">
+              <h2 className="font-press-start text-2xl mb-5 text-shadow">联系我们</h2>
+              <div className="mc-contact-panel">
+                <strong className="text-lg text-[#e6ffe6] font-bold drop-shadow-md">有问题或想合作？欢迎通过以下方式联系：</strong>
+                <div className="mt-2 flex flex-col gap-1">
+                  <strong className="text-lg text-[#e6ffe6] font-bold drop-shadow-md">社区QQ群：512955930</strong>
+                  <strong className="text-lg text-[#e6ffe6] font-bold drop-shadow-md">管理员邮箱：3206288040@qq.com</strong>
+                  <strong className="text-lg text-[#e6ffe6] font-bold drop-shadow-md">线下咨询：西南石油大学南充校区Minecraft萤石社</strong>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
       </main>
       <Footer />
       {/* Minecraft HUD - 固定在屏幕底部中间 */}

@@ -1,106 +1,109 @@
 'use client';
 
-import { motion, useMotionValue, useSpring } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
 
+interface Particle {
+    id: number;
+    x: number;
+    y: number;
+    vx: number; // x轴速度
+    vy: number; // y轴速度
+    scale: number;
+    rotation: number;
+}
+
 export const CustomCursor = () => {
-    const cursorX = useMotionValue(-100);
-    const cursorY = useMotionValue(-100);
+    const [particles, setParticles] = useState<Particle[]>([]);
+    const particleIdCounter = useRef(0);
 
-    const [isClient, setIsClient] = useState(false);
-
-    // add effect of spring to the cursor
-    const springX = useSpring(cursorX, {
-        stiffness: 300, // 增加刚度，让跟随更紧
-        damping: 20     // 增加阻尼，减少震荡
-    });
-    const springY = useSpring(cursorY, {
-        stiffness: 300, // 增加刚度，让跟随更紧
-        damping: 20     // 增加阻尼，减少震荡
-    });
-
-
-
-    // use useEffect to update the cursor position
     useEffect(() => {
-        const handleMouseMove = (e: MouseEvent) => {
-            cursorX.set(e.clientX);
-            cursorY.set(e.clientY);
+        const handleClick = (e: MouseEvent) => {
+            const newParticles: Particle[] = [];
+            // 每次点击生成8-12个粒子
+            const count = 8 + Math.floor(Math.random() * 5);
+            
+            for (let i = 0; i < count; i++) {
+                const angle = (Math.PI * 2 * i) / count;
+                const speed = 3 + Math.random() * 5; // 随机速度
+                
+                newParticles.push({
+                    id: particleIdCounter.current++,
+                    x: e.clientX,
+                    y: e.clientY,
+                    vx: Math.cos(angle) * speed + (Math.random() - 0.5) * 2,
+                    vy: Math.sin(angle) * speed + (Math.random() - 0.5) * 2,
+                    scale: 0.5 + Math.random() * 0.8, // 随机大小
+                    rotation: Math.random() * 360
+                });
+            }
+            
+            setParticles(prev => [...prev, ...newParticles]);
         };
-        window.addEventListener('mousemove', handleMouseMove);
-        return () => window.removeEventListener('mousemove', handleMouseMove);
-    }, [cursorX, cursorY]);
 
-    // 检测客户端环境
-    useEffect(() => {
-        setIsClient(true);
+        window.addEventListener('mousedown', handleClick); // 改为mousedown以获得更快的响应
+        return () => window.removeEventListener('mousedown', handleClick);
     }, []);
 
-
-
-    return(
-        <motion.div
-            className="custom-cursor"
-            style={{
-                position: 'fixed',
-                top: 0,
-                left: 0,
-                pointerEvents: 'none',
-                zIndex: 9999,
-                translateX: springX,
-                translateY: springY
-            }}
-        >
-            
-            {/* 额外的随机粒子 */}
-            {isClient && Array.from({ length: 8 }).map((_, i) => {
-                const randomScale = 0.3 + Math.random() * 1.0; // 0.3-1.3 更大的大小差异
-                const randomDelay = Math.random() * 4; // 0-4秒随机延迟
-                return (
+    return (
+        <div style={{ 
+            position: 'fixed', 
+            top: 0, 
+            left: 0, 
+            width: '100%', 
+            height: '100%', 
+            pointerEvents: 'none', 
+            zIndex: 9999,
+            overflow: 'hidden'
+        }}>
+            <AnimatePresence>
+                {particles.map((particle) => (
                     <motion.div
-                        key={`extra-${i}`}
-                        style={{
-                            position: 'absolute',
-                            left: 0, // 从中心开始
-                            top: 0,
-                            width: '16px',
-                            height: '16px',
-                            transform: 'translate(-50%, -50%)'
-                        }}
+                        key={particle.id}
                         initial={{ 
-                            opacity: 1, 
-                            scale: randomScale,
-                            x: 0,
-                            y: 0
+                            x: particle.x, 
+                            y: particle.y, 
+                            scale: 0,
+                            rotate: particle.rotation,
+                            opacity: 1
                         }}
                         animate={{ 
-                            opacity: 1,
-                            scale: randomScale,
-                            x: (Math.random() - 0.5) * 120, // 扩大随机范围到-60px到60px
-                            y: -20 // 向上移动更多距离
+                            x: particle.x + particle.vx * 30, // 向四周扩散
+                            y: particle.y + particle.vy * 30,
+                            scale: particle.scale,
+                            opacity: 0,
+                            rotate: particle.rotation + (Math.random() > 0.5 ? 90 : -90)
                         }}
-                        transition={{
-                            duration: 2.5,
-                            repeat: Infinity,
-                            delay: randomDelay,
-                            ease: "linear"
+                        exit={{ opacity: 0 }}
+                        transition={{ 
+                            duration: 0.8, 
+                            ease: "easeOut" 
+                        }}
+                        onAnimationComplete={() => {
+                            setParticles(prev => prev.filter(p => p.id !== particle.id));
+                        }}
+                        style={{
+                            position: 'absolute',
+                            width: '20px',
+                            height: '20px',
+                            transform: 'translate(-50%, -50%)' // 居中
                         }}
                     >
                         <Image
                             src="/particle/heart_128x128.png"
                             alt="heart particle"
-                            width={16}
-                            height={16}
+                            width={20}
+                            height={20}
                             style={{
-                            width: '100%',
-                            height: '100%',
-                            imageRendering: 'pixelated'
-                        }}
+                                width: '100%',
+                                height: '100%',
+                                imageRendering: 'pixelated'
+                            }}
                         />
                     </motion.div>
-                );
-            })}
-        </motion.div>
-    )
+                ))}
+            </AnimatePresence>
+        </div>
+    );
 }

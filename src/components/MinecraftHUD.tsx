@@ -30,7 +30,8 @@ export default function MinecraftHUD({
 
   // 计算每个饥饿值应该显示的状态
   const getHungerState = (index: number) => {
-    const hungerValue = hunger - (index * 2);
+    // 反转计算逻辑，使饥饿值从左往右减少 (即左边先空)
+    const hungerValue = hunger - ((9 - index) * 2);
     if (hungerValue >= 2) return 2; // 满饥饿
     if (hungerValue >= 1) return 1; // 半饥饿
     return 0; // 空饥饿
@@ -123,7 +124,8 @@ export default function MinecraftHUD({
                       minWidth: '16px',
                       minHeight: '16px',
                       width: 'min(22px, 4vw)',
-                      height: 'min(22px, 4vw)'
+                      height: 'min(22px, 4vw)',
+                      filter: 'drop-shadow(0.5px 0 0 #000) drop-shadow(-0.5px 0 0 #000) drop-shadow(0 1px 0 #000) drop-shadow(0 -0.5px 0 #000)'
                     }}
                   />
                 );
@@ -164,7 +166,8 @@ export default function MinecraftHUD({
                         minWidth: '16px',
                         minHeight: '16px',
                         width: 'min(22px, 4vw)',
-                        height: 'min(22px, 4vw)'
+                        height: 'min(22px, 4vw)',
+                        filter: 'drop-shadow(0.5px 0 0 #000) drop-shadow(-0.5px 0 0 #000) drop-shadow(0 1px 0 #000) drop-shadow(0 -0.5px 0 #000)'
                       }}
                     />
                   </motion.div>

@@ -315,7 +315,7 @@ export default function Player() {
                 whileTap={{ scale: 0.95 }}
                 style={{ cursor: isDragging ? 'grabbing' : 'pointer' }}
             >
-                <Image src="/Player/player.png" alt="Player" width={128} height={128} />
+                <Image src="/Player/唱片1.png" alt="Player" width={128} height={128} />
             </motion.div>
             
             {isPlayerVisible && (

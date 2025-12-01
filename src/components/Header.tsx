@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
 import Player from './Player/player';
 
 const navLinks = [
@@ -11,7 +10,6 @@ const navLinks = [
   { href: '#activities', text: '活动一览' },
   { href: '#server', text: '社团服务器' },
   { href: '#gallery', text: '作品图库' },
-  { href: '#join', text: '加入我们' },
   { href: '#contact', text: '联系我们' },
 ];
 
@@ -26,98 +24,93 @@ export default function Header() {
     return () => window.removeEventListener('keydown', onKey);
   }, []);
 
-  return (
-    <header className={`site-header sticky top-0 z-40 shadow-[0_4px_0_#0008] ${isMenuOpen ? 'open' : ''}`}>
-      <div className="container mx-auto w-[min(1100px,92%)] flex items-center justify-between p-2.5">
-        <div className="brand flex items-center gap-2.5 font-press-start" aria-label="返回首页">
-          <div className="item-frame flex items-center justify-center w-9 h-9">
-            <Image src="/assets/svg/creeper.svg" alt="Creeper" width={28} height={28} className="pixelated" />
-          </div>
-          <span className="brand-text text-sm tracking-wider mc-3d px-2 py-1">萤石社</span>
-        </div>
+  // 当菜单打开时禁止背景滚动
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [isMenuOpen]);
 
-        <nav
-          id="main-nav"
-          className={`main-nav absolute md:static md:flex flex-col md:flex-row gap-4 main-nav absolute top-0 left-0 
-            right-0 md:top-auto bg-[#2b2b2b] md:bg-transparent border-t-4 md:border-none border-black p-2.5 
-            md:p-0 ${isMenuOpen ? 'menu-open' : 'menu-closed'}`}
-          role="navigation"
-          aria-hidden={!isMenuOpen}
-          style={{ pointerEvents: isMenuOpen ? 'auto' : 'none' }}
-        >
+  return (
+    <header className="mc-header-bg sticky top-0 z-40 w-full">
+      <div className="container mx-auto px-4 h-16 flex items-center justify-between">
+        {/* Logo */}
+        <Link href="/" className="flex items-center gap-3 group no-underline" aria-label="返回首页">
+          <div className="relative w-10 h-10 transition-transform group-hover:scale-110">
+            <Image 
+              src="/assets/svg/creeper.svg" 
+              alt="Creeper" 
+              width={40} 
+              height={40} 
+              className="pixelated drop-shadow-md" 
+            />
+          </div>
+          <span className="font-press-start text-white text-shadow-sm text-sm md:text-base tracking-wider" style={{ textShadow: '2px 2px 0 #000' }}>
+            Minecraft萤石社
+          </span>
+        </Link>
+
+        {/* Desktop Nav */}
+        <nav className="hidden md:flex items-center gap-3">
           {navLinks.map(link => (
-            <Link key={link.href} href={link.href} className="mc-btn-nav block md:inline-block" onClick={() => setIsMenuOpen(false)}>
+            <Link 
+              key={link.href} 
+              href={link.href} 
+              className="mc-btn-nav text-xs lg:text-sm whitespace-nowrap no-underline"
+            >
               {link.text}
             </Link>
           ))}
         </nav>
-        {/* overlay for mobile when menu is open */}
-        {isMenuOpen && (
-          <div 
-            className="mobile-overlay fixed inset-0 z-30" 
-            onClick={() => setIsMenuOpen(false)} 
-            aria-hidden="true"
-            style={{ pointerEvents: 'auto' }}
-          />
-        )}
+
+        {/* Mobile Menu Button */}
+        <button 
+          className={`burger-btn md:hidden ${isMenuOpen ? 'open' : ''}`}
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          aria-label={isMenuOpen ? "关闭菜单" : "打开菜单"}
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
       </div>
 
+      {/* Mobile Fullscreen Menu (Dirt Background) */}
+      {isMenuOpen && (
+        <div className="mc-mobile-menu">
+          <div className="mc-mobile-menu-content">
+            <h2 className="mc-mobile-menu-title">游戏菜单</h2>
+            
+            <div className="flex flex-col gap-4 w-full max-w-xs">
+              {navLinks.map(link => (
+                <Link 
+                  key={link.href} 
+                  href={link.href} 
+                  className="mc-btn w-full text-center py-3 text-sm no-underline block"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {link.text}
+                </Link>
+              ))}
+              
+              <div className="h-4"></div>
+              
+              <button 
+                className="mc-btn w-full text-center py-3 text-sm"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                返回游戏
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* 唱片机播放器组件实现 */}
-      {<Player />}
-      
-      {/* 独立的绳子按钮 */}
-      <button
-        id="rope-toggle"
-        aria-controls="main-nav"
-        className="rope-toggle md:hidden"
-        aria-label="展开导航"
-        aria-expanded={isMenuOpen}
-        onClick={() => setIsMenuOpen(!isMenuOpen)}
-      >
-        <motion.div 
-          className="rope rounded-lg"
-          initial={{ height: 150 }}
-          animate={{ height: isMenuOpen ? 500 : 180 }}
-          transition={{ 
-            duration: 0.5, 
-            ease: [0.68, -0.55, 0.265, 1.55],
-            type: "spring",
-            stiffness: 100,
-            damping: 10
-          }}
-        />
-        <motion.div 
-          className="villager"
-          initial={{ y: 0 }}
-          animate={{ y: isMenuOpen ? 350 : 30 }}
-          transition={{ 
-            duration: 0.5, 
-            ease: [0.68, -0.55, 0.265, 1.55],
-            type: "spring",
-            stiffness: 100,
-            damping: 10
-          }}
-        >
-          <Image src="/Menu.png" alt="Villager" width={64} height={128} className="pixelated" />
-        </motion.div>
-      </button>
+      <Player />
     </header>
   );
 }
-
-// Add this to globals.css for the nav button style if it's not easily doable with tailwind
-/*
-.mc-btn-nav {
-  padding: 8px 10px;
-  border: 2px solid #000;
-  box-shadow: 0 3px 0 #000;
-  background: var(--mc-ui);
-  color: #222;
-  font-weight: 700;
-  transition: transform 0.1s ease-in-out;
-}
-.mc-btn-nav:hover {
-  transform: translateY(-2px);
-  background: #e0e0e0;
-}
-*/
